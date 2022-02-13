@@ -1,1 +1,1 @@
-web: gunicorn minor_project.wsgi --log file -
+web: waitress-serve --port=8000 minor_project.wsgi:application
