@@ -21,7 +21,7 @@ def notification(request):
     if request.method == "POST":
         customer_notification = request.POST.get('customer_notification')
         Notification(user_notice = customer_notification).save()
-    return render('/admin')
+    return redirect('/admin')
     
 def changepw(request):
     if request.method == 'POST':
