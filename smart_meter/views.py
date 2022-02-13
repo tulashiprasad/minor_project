@@ -1270,11 +1270,16 @@ def user_login(request):
                     log(request, user)
                     return redirect('/index')
             else:
+                messages.success(request, 'Something went wrong,Please try again')
                 return redirect('/')
         else:
+            messages.success(request, 'Something went wrong,Please try again')
+
             return redirect('/')
 
     else:
+        messages.success(request, 'Something went wrong,Please try again')
+
         return redirect('/')
 
 
