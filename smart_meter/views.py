@@ -705,7 +705,7 @@ def index(request):
         if list3:
             unit_4 = list4[len(list4)-1] - list3[len(list3)-1]
         else:
-            unit_4 = list4[len(list4)-1] - list4[4]
+            unit_4 = list4[len(list4)-1] - list4[0]
 
     else:
         unit_4 = 0
@@ -759,7 +759,7 @@ def index(request):
         if list10:
             unit_11 = list11[len(list11)-1] - list10[len(list10)-1]
         else:
-            unit_11 - list11[len(list11)-1] - list10[0]
+            unit_11 - list11[len(list11)-1] - list11[0]
     else:
         unit_11 = 0
     if list12:
@@ -773,7 +773,7 @@ def index(request):
         if list12:
             unit_13 = list13[len(list13)-1] - list12[len(list12)-1]
         else:
-            unit_13 - list13[len(list13)-1] - list12[0]
+            unit_13 - list13[len(list13)-1] - list13[0]
     else:
         unit_13 = 0
     if list14:
@@ -799,7 +799,7 @@ def index(request):
         unit_16 = 0
     if list17:
         if list16:
-            unit_17 = list17[len(list17)-1] - list16[len(list16)-10]
+            unit_17 = list17[len(list17)-1] - list16[len(list16)-1]
         else:
             unit_17 = list17[len(list17)-1] - list17[0]
     else:
@@ -851,14 +851,14 @@ def index(request):
         unit_23 = 0
     if list24:
         if list23:
-            unit_24 = list24[len(list24)-1] - list23[len(list23)-10]
+            unit_24 = list24[len(list24)-1] - list23[len(list23)-1]
         else:
-            unit_24 = list24[len(list24)-1] - list23[len(list23)-10]
+            unit_24 = list24[len(list24)-1] - list24[0]
     else:
         unit_24 = 0
     if list25:
         if list24:
-            unit_25 = list25[len(list25)-1] - list24[len(list24)-10]
+            unit_25 = list25[len(list25)-1] - list24[len(list24)-1]
         else:
             unit_25 = list25[len(list25)-1] - list25[0]
     else:
@@ -896,7 +896,7 @@ def index(request):
         if list29:
             unit_30 = list30[len(list30)-1] - list29[len(list29)-1]
         else:
-            unit_30 = list30[len(list30)-1] - list20[0]
+            unit_30 = list30[len(list30)-1] - list30[0]
     else:
         unit_30 = 0
     if list_month:
@@ -1100,7 +1100,19 @@ def index(request):
         day_total = round(list_day[len(list_day)-1] - list_day[0], 2)
     else:
         day_total = 0
-
+    print(list9)
+    print()
+    print(list10)
+    print()
+    print(list11)
+    print()
+    print(list12)
+    print()
+    print(list16)
+    print()
+    print(list17)
+    print()
+    print(list18)
     user_notice = Notification.objects.all()
     unit_consumption = {
         'JAN': january_units,
@@ -1270,16 +1282,11 @@ def user_login(request):
                     log(request, user)
                     return redirect('/index')
             else:
-                messages.success(request, 'Something went wrong,Please try again')
                 return redirect('/')
         else:
-            messages.success(request, 'Something went wrong,Please try again')
-
             return redirect('/')
 
     else:
-        messages.success(request, 'Something went wrong,Please try again')
-
         return redirect('/')
 
 
