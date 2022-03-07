@@ -1159,7 +1159,7 @@ def index(request):
         "unit_28": unit_28,
         "unit_29": unit_29,
         "unit_30": unit_30,
-        "MONTH_TOTAL": month_unit,
+        "MONTH_TOTAL": round(month_unit,2),
         "MONTH_TOTAL_COST": round(month_unit*12, 2),
         "unit_1h": unit_1h,
         "unit_2h": unit_2h,
