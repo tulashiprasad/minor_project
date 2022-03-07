@@ -1210,54 +1210,57 @@ def index(request):
 def admin(request):
     if request.user.is_anonymous:
         return redirect('/')
-    response1 = requests.get(
-        'https://api.thingspeak.com/channels/1650274/feeds.json?api_key=RFX5OCDEA14IIK6S&timezone=Asia%2FKathmandu&results=1')
-    res1 = json.loads(response1.text)
-    channel = res1['channel']['last_entry_id']
+    if request.user.is_superuser:
+        response1 = requests.get(
+            'https://api.thingspeak.com/channels/1650274/feeds.json?api_key=RFX5OCDEA14IIK6S&timezone=Asia%2FKathmandu&results=1')
+        res1 = json.loads(response1.text)
+        channel = res1['channel']['last_entry_id']
 
-    response2 = requests.get(
-        f"https://api.thingspeak.com/channels/1650274/feeds.json?api_key=RFX5OCDEA14IIK6S&timezone=Asia%2FKathmandu&results={channel}")
-    res2 = json.loads(response2.text)['feeds']
+        response2 = requests.get(
+            f"https://api.thingspeak.com/channels/1650274/feeds.json?api_key=RFX5OCDEA14IIK6S&timezone=Asia%2FKathmandu&results={channel}")
+        res2 = json.loads(response2.text)['feeds']
 
-    list_day = []
-    set_month = set()
-    for raw_data in res2:
-        raw_date = raw_data['created_at']
-        year = raw_date[0:4]
-        month = raw_date[5:7]
-        day = raw_date[8:10]
-        hour = raw_date[11:13]
-        minute = raw_date[14:16]
-        datetime_object = datetime.datetime.strptime(
-            f'{year} {month} {day} {hour}:{minute}', '%Y %m %d %H:%M')
+        list_day = []
+        set_month = set()
+        for raw_data in res2:
+            raw_date = raw_data['created_at']
+            year = raw_date[0:4]
+            month = raw_date[5:7]
+            day = raw_date[8:10]
+            hour = raw_date[11:13]
+            minute = raw_date[14:16]
+            datetime_object = datetime.datetime.strptime(
+                f'{year} {month} {day} {hour}:{minute}', '%Y %m %d %H:%M')
 
-        if (datetime_object.date().year == datetime.datetime.now(tzoffset('GMT', 20700)).year):
-            this_year_total = float(raw_data['field1'])
+            if (datetime_object.date().year == datetime.datetime.now(tzoffset('GMT', 20700)).year):
+                this_year_total = float(raw_data['field1'])
 
-        if ((00 <= datetime_object.time().hour <= 23) and (datetime_object.date().day == datetime.datetime.now(tzoffset('GMT', 20700)).day) and (datetime_object.date().month == datetime.datetime.now(tzoffset('GMT', 20700)).month) and (datetime_object.date().year == datetime.datetime.now(tzoffset('GMT', 20700)).year)):
-            day_unit = float(raw_data['field1'])
-            list_day.append(day_unit)
+            if ((00 <= datetime_object.time().hour <= 23) and (datetime_object.date().day == datetime.datetime.now(tzoffset('GMT', 20700)).day) and (datetime_object.date().month == datetime.datetime.now(tzoffset('GMT', 20700)).month) and (datetime_object.date().year == datetime.datetime.now(tzoffset('GMT', 20700)).year)):
+                day_unit = float(raw_data['field1'])
+                list_day.append(day_unit)
 
-        if((0 < datetime_object.date().day <= 30) and (datetime_object.date().month == datetime.datetime.now(tzoffset('GMT', 20700)).month) and (datetime_object.date().year == datetime.datetime.now(tzoffset('GMT', 20700)).year)):
-            month_unit = round(float(raw_data['field1']), 2)
-            set_month.add(month_unit)
+            if((0 < datetime_object.date().day <= 30) and (datetime_object.date().month == datetime.datetime.now(tzoffset('GMT', 20700)).month) and (datetime_object.date().year == datetime.datetime.now(tzoffset('GMT', 20700)).year)):
+                month_unit = round(float(raw_data['field1']), 2)
+                set_month.add(month_unit)
 
-        if list_day:
-            day_total = list_day[len(list_day)-1] - list_day[0]
-        else:
-            day_total = 0
+            if list_day:
+                day_total = list_day[len(list_day)-1] - list_day[0]
+            else:
+                day_total = 0
 
-    clients = []
-    for user in User.objects.all():
-        clients.append(user.username)
-    clients.remove(request.user.username)
-    client_users  = {
-        "client_users":clients,
-        "DAY_TOTAL": round(day_total,2),
-        "MONTH_TOTAL": round(month_unit,2),
-        "YEAR_TOTAL": round(this_year_total,2),
-    }
-    return render(request, 'admin.html',client_users)
+        clients = []
+        for user in User.objects.all():
+            clients.append(user.username)
+        clients.remove(request.user.username)
+        client_users  = {
+            "client_users":clients,
+            "DAY_TOTAL": round(day_total,2),
+            "MONTH_TOTAL": round(month_unit,2),
+            "YEAR_TOTAL": round(this_year_total,2),
+        }
+        return render(request, 'admin.html',client_users)
+    else:
+        return redirect('/index')
 
 
 def user_login(request):
