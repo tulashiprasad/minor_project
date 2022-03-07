@@ -14,6 +14,9 @@ from django.contrib.auth import authenticate, login as log, logout
 def login(request):
     return render(request, 'login.html')
 
+def map(request):
+    return render(request, 'map.html')
+
 def contact(request):
     return render(request, 'contact.html')
 
@@ -457,6 +460,8 @@ def index(request):
         if ((datetime_object.time().hour == 12) and (datetime_object.date().day == datetime.datetime.now(tzoffset('GMT', 20700)).day) and (datetime_object.date().month == datetime.datetime.now(tzoffset('GMT', 20700)).month) and (datetime_object.date().year == datetime.datetime.now(tzoffset('GMT', 20700)).year)):
             one2h = float(raw_data['field1'])
             list12h.append(one2h)
+            print(one2h)
+
 
         if ((datetime_object.time().hour == 13) and (datetime_object.date().day == datetime.datetime.now(tzoffset('GMT', 20700)).day) and (datetime_object.date().month == datetime.datetime.now(tzoffset('GMT', 20700)).month) and (datetime_object.date().year == datetime.datetime.now(tzoffset('GMT', 20700)).year)):
             one3h = float(raw_data['field1'])
@@ -1100,19 +1105,7 @@ def index(request):
         day_total = round(list_day[len(list_day)-1] - list_day[0], 2)
     else:
         day_total = 0
-    print(list9)
-    print()
-    print(list10)
-    print()
-    print(list11)
-    print()
-    print(list12)
-    print()
-    print(list16)
-    print()
-    print(list17)
-    print()
-    print(list18)
+
     user_notice = Notification.objects.all()
     unit_consumption = {
         'JAN': january_units,
