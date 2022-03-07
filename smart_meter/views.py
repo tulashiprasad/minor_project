@@ -460,7 +460,6 @@ def index(request):
         if ((datetime_object.time().hour == 12) and (datetime_object.date().day == datetime.datetime.now(tzoffset('GMT', 20700)).day) and (datetime_object.date().month == datetime.datetime.now(tzoffset('GMT', 20700)).month) and (datetime_object.date().year == datetime.datetime.now(tzoffset('GMT', 20700)).year)):
             one2h = float(raw_data['field1'])
             list12h.append(one2h)
-            print(one2h)
 
 
         if ((datetime_object.time().hour == 13) and (datetime_object.date().day == datetime.datetime.now(tzoffset('GMT', 20700)).day) and (datetime_object.date().month == datetime.datetime.now(tzoffset('GMT', 20700)).month) and (datetime_object.date().year == datetime.datetime.now(tzoffset('GMT', 20700)).year)):
@@ -1243,10 +1242,15 @@ def admin(request):
                 month_unit = round(float(raw_data['field1']), 2)
                 set_month.add(month_unit)
 
+            list_month= sorted(list(set_month))
             if list_day:
                 day_total = list_day[len(list_day)-1] - list_day[0]
             else:
                 day_total = 0
+            if list_month:
+                month_unit = list_month[len(list_month)-1] - list_month[0]
+            else:
+                month_unit = 0
 
         clients = []
         for user in User.objects.all():
