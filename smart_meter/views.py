@@ -958,7 +958,7 @@ def index(request):
 
     if list7h:
         if list6h:
-            unit_7h = list6h[len(list7h)-1] - list6h[len(list6h)-1]
+            unit_7h = list7h[len(list7h)-1] - list6h[len(list6h)-1]
         else:
             unit_7h = list7h[len(list7h)-1] - list7h[0]
     else:
@@ -1104,6 +1104,7 @@ def index(request):
         day_total = round(list_day[len(list_day)-1] - list_day[0], 2)
     else:
         day_total = 0
+
 
     user_notice = Notification.objects.all()
     unit_consumption = {
